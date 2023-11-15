@@ -1,5 +1,6 @@
 #include <string.h>
 #include <stddef.h>
+#include "main.h"
 
 /**
  * _getenv - gets an environment variable
