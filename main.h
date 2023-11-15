@@ -25,7 +25,7 @@ void print_paths(struct path_node *head);
 
 void free_paths(struct path_node *head);
 
-struct path_nod *build_path_list();
+struct path_node *build_path_list();
 
 int shell();
 

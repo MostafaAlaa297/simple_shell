@@ -18,8 +18,7 @@
  */
 int execute_command(char *input, struct path_node *path_list)
 {
-	char *path_env = _getenv("PATH");
-	char *envp[] = {NULL};
+	char *envp[2];
 	char *args[MAX_ARG_COUNT];
 	int arg_count = 0;
 	char *token = strtok(input, " \t\n");
@@ -27,8 +26,9 @@ int execute_command(char *input, struct path_node *path_list)
 	int status;
 	char full_path[PATH_MAX];
 	/*char *path_env;
-	path_env = _getenv("PATH");
-	char *envp[] = {path_env, NULL};*/
+	path_env = _getenv("PATH");*/
+	envp[0] = _getenv("PATH");
+	envp[1] = NULL;
 
 	while (token != NULL && arg_count < MAX_ARG_COUNT - 1)
 	{
