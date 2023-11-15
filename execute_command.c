@@ -7,6 +7,8 @@
 #include <string.h>
 #include "main.h"
 
+#define MAX_ARG_COUNT 10
+
 /**
  * execute_command - Executes the shell commands
  * @input: The input user enters in shell
@@ -16,18 +18,21 @@
  */
 int execute_command(char *input, struct path_node *path_list)
 {
+	char *path_env = _getenv("PATH");
+	char *envp[] = {NULL};
 	char *args[MAX_ARG_COUNT];
 	int arg_count = 0;
 	char *token = strtok(input, " \t\n");
 	pid_t child_pid;
 	int status;
 	char full_path[PATH_MAX];
-	char path_env = _getenv("PATH=");
-	char *envp = {path_env, NULL};
+	/*char *path_env;
+	path_env = _getenv("PATH");
+	char *envp[] = {path_env, NULL};*/
 
-	while (token != NULL && arg_Count < MAX_ARG_COUNT - 1)
+	while (token != NULL && arg_count < MAX_ARG_COUNT - 1)
 	{
-		args[arg_count];
+		args[arg_count] = token;
 		arg_count++;
 		token = strtok(NULL, " \t\n");
 	}
@@ -40,7 +45,7 @@ int execute_command(char *input, struct path_node *path_list)
 
 	while (path_list != NULL)
 	{
-		snprintf(full_path, PATH_MAX, "%S%S", path_list->path, args[0]);
+		snprintf(full_path, PATH_MAX, "%s%s", path_list->path, args[0]);
 		if (access(full_path, X_OK))
 		{
 			child_pid = fork();
@@ -64,12 +69,12 @@ int execute_command(char *input, struct path_node *path_list)
 				}
 			}
 		}
-		else if (acess(args[0], X_OK) == 0)
+		else if (access(args[0], X_OK) == 0)
 		{
 			child_pid = fork();
-			if (child_pid = -1)
+			if (child_pid == -1)
 			{
-				perrro("Error forking:");
+				perror("Error forking:");
 				return (1);
 			}
 
@@ -89,8 +94,8 @@ int execute_command(char *input, struct path_node *path_list)
 
 			path_list = path_list->next;
 		}
-
-		fprintf(stderr, "Command not found: %s\n", args[0]);
-		return (1);
+		path_list = path_list->next;
 	}
+	fprintf(stderr, "Command not found: %s\n", args[0]);
+	return (1);
 }

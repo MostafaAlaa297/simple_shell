@@ -11,7 +11,7 @@
  * Return: The new added node
  */
 
-struct path_node *add_path(struct path_node *head, const char *path)
+struct path_node *add_path(struct path_node *head, char *path)
 {
 	struct path_node *newnode = (struct path_node *)malloc(sizeof(struct path_node));
 	
@@ -74,7 +74,7 @@ void free_paths(struct path_node *head)
 struct path_node *build_path_list()
 {
 	struct path_node *path_list = NULL;
-	char *path_env = _getenv("PATH=");
+	char *path_env = _getenv("PATH");
 
 	if (path_env != NULL)
 	{
@@ -82,7 +82,7 @@ struct path_node *build_path_list()
 
 		while (token != NULL)
 		{
-			path_list = add(path_list, token);
+			path_list = add_path(path_list, token);
 			token = strtok(NULL, ":");
 		}
 	}
