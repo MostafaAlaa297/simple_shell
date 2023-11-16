@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <linux/limits.h>
 #include <string.h>
+#include <unistd.h>
 #include "main.h"
 
 #define MAX_ARG_COUNT 10
@@ -25,7 +25,9 @@ int execute_command(char *input, struct path_node *path_list)
 	int status;
 	char full_path[PATH_MAX];
 	char *envp[2];
-	envp[0] = _getenv("PATH=");
+	extern char **environ;
+	unsigned int i;
+	envp[0] = _getenv("PATH");
 	envp[1] = NULL;
 
 	while (token != NULL && arg_count < MAX_ARG_COUNT - 1)
@@ -39,6 +41,15 @@ int execute_command(char *input, struct path_node *path_list)
 	if (arg_count > 0 && _strcmp(args[0], "exit") == 0)
 	{
 		exit(0);
+	}
+
+	else if (arg_count > 0 && _strcmp(args[0], "env") == 0)
+	{
+		for (i = 0; environ[i] != NULL; i++)
+		{
+			printf("%s\n", environ[i]);
+		}
+		return (0);
 	}
 
 	while (path_list != NULL)
