@@ -74,7 +74,7 @@ void free_paths(struct path_node *head)
 struct path_node *build_path_list()
 {
 	struct path_node *path_list = NULL;
-	char *path_env = _getenv("PATH");
+	char *path_env = _getenv("PATH=");
 
 	if (path_env != NULL)
 	{

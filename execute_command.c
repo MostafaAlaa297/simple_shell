@@ -18,16 +18,14 @@
  */
 int execute_command(char *input, struct path_node *path_list)
 {
-	char *envp[2];
 	char *args[MAX_ARG_COUNT];
 	int arg_count = 0;
 	char *token = strtok(input, " \t\n");
 	pid_t child_pid;
 	int status;
 	char full_path[PATH_MAX];
-	/*char *path_env;
-	path_env = _getenv("PATH");*/
-	envp[0] = _getenv("PATH");
+	char *envp[2];
+	envp[0] = _getenv("PATH=");
 	envp[1] = NULL;
 
 	while (token != NULL && arg_count < MAX_ARG_COUNT - 1)
@@ -46,7 +44,7 @@ int execute_command(char *input, struct path_node *path_list)
 	while (path_list != NULL)
 	{
 		snprintf(full_path, PATH_MAX, "%s%s", path_list->path, args[0]);
-		if (access(full_path, X_OK))
+		if (access(full_path, X_OK) == 0)
 		{
 			child_pid = fork();
 			if (child_pid == -1)
@@ -57,16 +55,14 @@ int execute_command(char *input, struct path_node *path_list)
 
 			if (child_pid == 0)
 			{
-				if (execve(full_path, args, envp) == -1)
-				{
+				execve(full_path, args, envp);
 					perror("execve");
 					exit(1);
-				}
-				else
-				{
-					waitpid(child_pid, &status, 0);
-					return (0);
-				}
+			}
+			else
+			{
+				waitpid(child_pid, &status, 0);
+				return (0);
 			}
 		}
 		else if (access(args[0], X_OK) == 0)
@@ -80,19 +76,15 @@ int execute_command(char *input, struct path_node *path_list)
 
 			if (child_pid == 0)
 			{
-				if (execve(args[0], args, envp) == -1)
-				{
+				execve(args[0], args, envp);
 					perror("execve");
 					exit(1);
-				}
-				else
-				{
-					waitpid(child_pid, &status, 0);
-					return (0);
-				}
 			}
-
-			path_list = path_list->next;
+			else
+			{		
+				waitpid(child_pid, &status, 0);
+				return (0);
+			}
 		}
 		path_list = path_list->next;
 	}
