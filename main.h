@@ -19,6 +19,8 @@ int _strcmp(const char *s1, const char *s2);
 
 char *_strdup(char *str);
 
+void env();
+
 struct path_node *add_path(struct path_node *head, char *path);
 
 void print_paths(struct path_node *head);

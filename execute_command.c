@@ -9,6 +9,28 @@
 
 #define MAX_ARG_COUNT 10
 
+extern char **environ;
+int i;
+char *token;
+
+void _env(void)
+{
+	for (i = 0; environ[i] != NULL; i++)
+	{
+		char *env_var = strdup(environ[i]);
+		token = strtok(env_var, "=");
+
+		if (token != NULL)
+		{
+			printf("%s=", token);
+			token = strtok(NULL, "=");
+			if (token != NULL)
+				printf("%s\n", token);
+			free(env_var);
+		}
+	}
+}
+
 /**
  * execute_command - Executes the shell commands
  * @input: The input user enters in shell
@@ -25,8 +47,6 @@ int execute_command(char *input, struct path_node *path_list)
 	int status;
 	char full_path[PATH_MAX];
 	char *envp[2];
-	extern char **environ;
-	unsigned int i;
 	envp[0] = _getenv("PATH");
 	envp[1] = NULL;
 
@@ -45,10 +65,12 @@ int execute_command(char *input, struct path_node *path_list)
 
 	else if (arg_count > 0 && _strcmp(args[0], "env") == 0)
 	{
-		for (i = 0; environ[i] != NULL; i++)
+		_env();
+
+		/*for (i = 0; environ[i] != NULL; i++)
 		{
 			printf("%s\n", environ[i]);
-		}
+		}*/
 		return (0);
 	}
 
