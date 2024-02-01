@@ -5,7 +5,7 @@ This project is a part of the ALX Software Engineering curriculum, specifically 
 ## Project Overview
 
 ### Important Guidelines
-- **Framework:** Ensure you are familiar with the project framework.
+- **Framework:** Ensure you are familiar with the project framework, which can be found [here](https://intranet.alxswe.com/concepts/559).
 - **No Code Copying:** Copying or looking at other people's code, including online articles or videos, is strictly prohibited. The emphasis is on learning, understanding, and creating solutions independently.
 - **Use of AI Tools:** While ChatGPT and similar tools are encouraged within the framework, they should not be used to directly code the solution. Focus on understanding and learning.
 
